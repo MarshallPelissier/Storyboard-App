@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using Storyboard_App.Models;
 using Storyboard_App.ViewModels;
+using System.Data.Entity;
 
 namespace Storyboard_App.Controllers
 {
@@ -101,8 +102,8 @@ namespace Storyboard_App.Controllers
         {
             if (!string.IsNullOrWhiteSpace(project))
             {
-                var projectInDb = _context.Projects.Single(c => c.Name == project);
-
+                var projectInDb = _context.Projects.Include(c => c.Pages).Single(c => c.Name == project);
+                
                 if (projectInDb != null)
                 {
                     var pageId = projectInDb.Pages.SingleOrDefault(c => c.Num == page);
@@ -113,7 +114,7 @@ namespace Storyboard_App.Controllers
 
                         if (pageInDb != null)
                         {                            
-                            return View("PageDisplay", pageInDb);
+                            return View("DisplayPage", pageInDb);
                         }
                     }
 
@@ -129,10 +130,12 @@ namespace Storyboard_App.Controllers
             if (!string.IsNullOrWhiteSpace(project))
             {
                 var projectInDb = _context.Projects.Single(c => c.Name == project);
+                var page = new Page();
+                page.ProjectId = projectInDb.Id;
 
                 if (projectInDb != null)
                 {                    
-                    return View("PageForm", new Page());
+                    return View("PageForm", page);
 
                 }
             }
@@ -172,13 +175,13 @@ namespace Storyboard_App.Controllers
 
             if (page.Id == 0)
             {
-                var projectInDb = _context.Projects.Single(c => c.Id == page.ProjectId);
+                var projectInDb = _context.Projects.Include(c => c.Pages).Single(c => c.Id == page.ProjectId);
                 _context.Pages.Add(page);
                 if (projectInDb.Pages == null)
                 {
                     projectInDb.Pages = new List<Page>();
                 }
-                projectInDb.Pages.Add(page);
+                //projectInDb.Pages.Add(page);
             }
             else
             {
@@ -194,7 +197,7 @@ namespace Storyboard_App.Controllers
             }
             _context.SaveChanges();
 
-            return RedirectToAction("DisplayPage", "Projects", new { page = page.Num });
+            return RedirectToAction("DisplayPage", "Projects", new { project = page.Project.Name, page = page.Num });
         }
 
         public ActionResult test()

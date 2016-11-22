@@ -6,27 +6,26 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Storyboard_App.Models
 {
-    public class UniqueNameValidation : ValidationAttribute
+    public class EmptyListValidation : ValidationAttribute
     {
         private ApplicationDbContext _context;
 
-        public UniqueNameValidation()
+        public EmptyListValidation()
         {
             _context = new ApplicationDbContext();
         }
-        
+
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var project = (Project)validationContext.ObjectInstance;
-            bool HasId = (project.Id == 0) ? false : true;
-            foreach(var p in _context.Projects)
+            var project= (Project)validationContext.ObjectInstance;   
+            if(project.Pages != null)
             {
-                if (p.Name == project.Name && !HasId)
+                if (project.Pages.Count >= 0)
                 {
-                    return new ValidationResult("Name must be unique");
+                    return ValidationResult.Success;
                 }
             }
-            return ValidationResult.Success;
+            return new ValidationResult("ERROR incorrect project page data.");
         }
     }
 }

@@ -190,8 +190,13 @@
     <Compile Include="Migrations\201611220540260_ProjectCustomValidation.Designer.cs">
       <DependentUpon>201611220540260_ProjectCustomValidation.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611220941087_EmptyListValidation.cs" />
+    <Compile Include="Migrations\201611220941087_EmptyListValidation.Designer.cs">
+      <DependentUpon>201611220941087_EmptyListValidation.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\EmptyListValidation.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Page.cs" />
@@ -286,6 +291,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201611220540260_ProjectCustomValidation.resx">
       <DependentUpon>201611220540260_ProjectCustomValidation.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611220941087_EmptyListValidation.resx">
+      <DependentUpon>201611220941087_EmptyListValidation.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

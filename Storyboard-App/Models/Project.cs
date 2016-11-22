@@ -15,9 +15,15 @@ namespace Storyboard_App.Models
         [UniqueNameValidation]
         public string Name { get; set; }
 
+        //[EmptyListValidation]
         public List<Page> Pages { get; set; }
 
         public string Description { get; set; }
+
+        //public Project()
+        //{
+        //    Pages = new List<Page>();
+        //}
         
     }
 }

@@ -8,7 +8,6 @@
 
 @using (Html.BeginForm("SavePage", "Projects"))
 {
-    @Html.ValidationSummary(true, "Please fix the following errors.")
     <div class="form-group">
         @Html.LabelFor(m => m.RoughSketch)
         @Html.TextBoxFor(m => m.RoughSketch, new { @class = "form-control" })
