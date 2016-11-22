@@ -1,4 +1,4 @@
-﻿@model Storyboard_App.ViewModels.PageViewModel
+﻿@model Storyboard_App.Models.Page
 @{
     ViewBag.Title = "PageForm";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -10,41 +10,37 @@
 {
     @Html.ValidationSummary(true, "Please fix the following errors.")
     <div class="form-group">
-        @Html.LabelFor(m => m.Page.RoughSketch)
-        @Html.TextBoxFor(m => m.Page.RoughSketch, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Page.RoughSketch)
+        @Html.LabelFor(m => m.RoughSketch)
+        @Html.TextBoxFor(m => m.RoughSketch, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.RoughSketch)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Page.NotesSketch)
-        @Html.TextBoxFor(m => m.Page.NotesSketch, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Page.NotesSketch)
+        @Html.LabelFor(m => m.NotesSketch)
+        @Html.TextBoxFor(m => m.NotesSketch, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.NotesSketch)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Page.FinalSketch)
-        @Html.TextBoxFor(m => m.Page.FinalSketch, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Page.FinalSketch)
+        @Html.LabelFor(m => m.FinalSketch)
+        @Html.TextBoxFor(m => m.FinalSketch, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.FinalSketch)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Page.Description)
-        @Html.TextAreaFor(m => m.Page.Description, new { @class = "multi-line-textbox" })
-        @Html.ValidationMessageFor(m => m.Page.Description)
+        @Html.LabelFor(m => m.Description)
+        @Html.TextAreaFor(m => m.Description, new { @class = "multi-line-textbox" })
+        @Html.ValidationMessageFor(m => m.Description)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Page.Script)
-        @Html.TextAreaFor(m => m.Page.Script, new { @class = "multi-line-textbox" })
-        @Html.ValidationMessageFor(m => m.Page.Script)
+        @Html.LabelFor(m => m.Script)
+        @Html.TextAreaFor(m => m.Script, new { @class = "multi-line-textbox" })
+        @Html.ValidationMessageFor(m => m.Script)
     </div>
     <div class="form-group">
-        @Html.LabelFor(m => m.Page.Num)
-        @Html.TextBoxFor(m => m.Page.Num, new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.Page.Num)
+        @Html.LabelFor(m => m.Num)
+        @Html.TextBoxFor(m => m.Num, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.Num)
     </div>
-    @Html.HiddenFor(m => m.Page.Id)
-    
-    @Html.HiddenFor(m => m.Project.Id)
-    @Html.HiddenFor(m => m.Project.Name)
-    @Html.HiddenFor(m => m.Project.Pages)
-    @Html.HiddenFor(m => m.Project.Description)
+    @Html.HiddenFor(m => m.Id)    
+    @Html.HiddenFor(m => m.ProjectId)
     @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary">Save</button>
 }

@@ -70,8 +70,9 @@ namespace Storyboard_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveProject(Project project)
         {
+            
             if (!ModelState.IsValid)
-            {
+            {                
                 return View("ProjectForm", project);
             }
 
@@ -111,14 +112,8 @@ namespace Storyboard_App.Controllers
                         var pageInDb = _context.Pages.Single(c => c.Id == pageId.Id);
 
                         if (pageInDb != null)
-                        {
-                            var pageViewModel = new PageViewModel
-                            {
-                                Project = projectInDb,
-                                Page = pageInDb
-                            };
-
-                            return View("PageDisplay", pageViewModel);
+                        {                            
+                            return View("PageDisplay", pageInDb);
                         }
                     }
 
@@ -136,13 +131,8 @@ namespace Storyboard_App.Controllers
                 var projectInDb = _context.Projects.Single(c => c.Name == project);
 
                 if (projectInDb != null)
-                {
-                    var viewModel = new PageViewModel
-                    {
-                        Project = projectInDb,
-                        Page = new Page()
-                    };
-                    return View("PageForm", viewModel);
+                {                    
+                    return View("PageForm", new Page());
 
                 }
             }
@@ -173,38 +163,38 @@ namespace Storyboard_App.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult SavePage(PageViewModel pageViewModel)
+        public ActionResult SavePage(Page page)
         {
             if (!ModelState.IsValid)
             {
-                return View("PageForm", pageViewModel);
+                return View("PageForm", page);
             }
 
-            if (pageViewModel.Page.Id == 0)
+            if (page.Id == 0)
             {
-                var projectInDb = _context.Projects.Single(c => c.Id == pageViewModel.Project.Id);
-                _context.Pages.Add(pageViewModel.Page);
+                var projectInDb = _context.Projects.Single(c => c.Id == page.ProjectId);
+                _context.Pages.Add(page);
                 if (projectInDb.Pages == null)
                 {
                     projectInDb.Pages = new List<Page>();
                 }
-                projectInDb.Pages.Add(pageViewModel.Page);
+                projectInDb.Pages.Add(page);
             }
             else
             {
-                var pageInDb = _context.Pages.Single(c => c.Id == pageViewModel.Page.Id);
+                var pageInDb = _context.Pages.Single(c => c.Id == page.Id);
 
-                pageInDb.Num = pageViewModel.Page.Num;
-                pageInDb.NotesSketch = pageViewModel.Page.NotesSketch;
-                pageInDb.RoughSketch = pageViewModel.Page.RoughSketch;
-                pageInDb.FinalSketch = pageViewModel.Page.FinalSketch;
-                pageInDb.Description = pageViewModel.Page.Description;
-                pageInDb.Script = pageViewModel.Page.Script;
+                pageInDb.Num = page.Num;
+                pageInDb.NotesSketch = page.NotesSketch;
+                pageInDb.RoughSketch = page.RoughSketch;
+                pageInDb.FinalSketch = page.FinalSketch;
+                pageInDb.Description = page.Description;
+                pageInDb.Script = page.Script;
 
             }
             _context.SaveChanges();
 
-            return RedirectToAction("DisplayPage", "Projects", new { project = pageViewModel.Project.Name, page = pageViewModel.Page.Num });
+            return RedirectToAction("DisplayPage", "Projects", new { page = page.Num });
         }
 
         public ActionResult test()
