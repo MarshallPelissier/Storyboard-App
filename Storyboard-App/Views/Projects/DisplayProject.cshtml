@@ -1,0 +1,27 @@
+﻿@model Storyboard_App.Models.Project
+@{
+    ViewBag.Title = "DisplayProject";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>@Model.Name</h2>
+
+<p>
+    @Html.ActionLink("New Page", "NewPage", "Projects", new { project = @Model.Name }, new { @class = "btn btn-primary" })
+    @Html.ActionLink("Edit Project", "EditProject", "Projects", new { id = @Model.Id }, new { @class = "btn btn-primary" })
+</p>
+<ul>
+    @if (Model.Pages == null)
+    {
+        <text>No Pages</text>
+    }
+    else
+    {
+        foreach (var page in Model.Pages)
+        {
+            <li>
+                @Html.ActionLink( page.Num.ToString() , "EditPage", "Projects", new { id = page.Id, project = @Model }, null)
+            </li>
+        }
+    }
+</ul>
