@@ -14,6 +14,18 @@ namespace Storyboard_App
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 
+            // Add the jquery-ui script bundle
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+                        "~/Scripts/jquery-ui-{version}.js"));
+
+            // Add the jquery-ui css bundle
+            bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
+                        "~/Content/themes/base/all.css"));
+
+            // Add custom jquery
+            bundles.Add(new StyleBundle("~/bundles/site-js").Include(
+                        "~/Scripts/site.js"));
+
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(

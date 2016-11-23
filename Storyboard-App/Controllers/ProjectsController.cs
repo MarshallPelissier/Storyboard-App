@@ -47,15 +47,16 @@ namespace Storyboard_App.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult NewProject()
+        [HttpGet]
+        public ActionResult New()
         {
             Project project = new Project();
-            //project.Pages = new List<Page>();
 
-            return View("ProjectForm", project);
+            return View("_ProjectForm", project);
         }
 
-        public ActionResult EditProject(int id)
+        [HttpGet] // this action result returns the partial containing the modal
+        public ActionResult Edit(int id)
         {
             var project = _context.Projects.SingleOrDefault(c => c.Id == id);
 
@@ -64,7 +65,33 @@ namespace Storyboard_App.Controllers
                 return HttpNotFound();
             }
 
-            return View("ProjectForm", project);
+            return PartialView("_ProjectForm", project);
+        }
+
+        [HttpPost] // this action takes the viewModel from the modal
+        public ActionResult Edit(Project project)
+        {
+            if (!ModelState.IsValid)
+            {
+                return PartialView("_ProjectForm", project);
+            }
+
+            if (project.Id == 0)
+            {
+                _context.Projects.Add(project);
+            }
+
+            else
+            {
+                var projectInDb = _context.Projects.Single(c => c.Id == project.Id);
+
+                projectInDb.Name = project.Name;
+                projectInDb.Description = project.Description;
+
+            }
+            _context.SaveChanges();
+
+            return RedirectToAction("DisplayProject", "Projects", new { project = project.Name });
         }
 
         [HttpPost]
