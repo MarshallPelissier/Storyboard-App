@@ -16,8 +16,14 @@ namespace Storyboard_App.Models
         }
         
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
+        {           
             var project = (Project)validationContext.ObjectInstance;
+
+            if (project.Name == @";newProject")
+            {
+                return new ValidationResult("Illegal name");
+            }
+
             bool HasId = (project.Id == 0) ? false : true;
             foreach(var p in _context.Projects)
             {

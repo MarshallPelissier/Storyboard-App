@@ -4,5 +4,9 @@
 
 
 <p>
-    @Html.ActionLink("New Project", "NewProject", "Projects", null, new { @class = "btn btn-primary" })
+    @*Html.ActionLink("New Project", "NewProject", "Projects", null, new { @class = "btn btn-primary" })*@
 </p>
+<div>
+    <button class="btn btn-primary new-project" data-id="">New Project</button>
+</div>
+@Html.Partial("_DialogPartial")

@@ -43,7 +43,10 @@ namespace Storyboard_App.Controllers
                     return View(projectInDb);
                 }
             }
-
+            //if (project==@";newProject")
+            //{
+            //    return RedirectToAction("NewProject");
+            //}
             return RedirectToAction("Index");
         }
 
@@ -119,8 +122,7 @@ namespace Storyboard_App.Controllers
 
             }
             _context.SaveChanges();
-
-            //return RedirectToAction("DisplayProject", "Projects", new { project = project.Name });
+            
             return PartialView("_FormSuccess");
         }
 
