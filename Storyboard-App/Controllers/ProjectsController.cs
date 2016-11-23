@@ -48,15 +48,15 @@ namespace Storyboard_App.Controllers
         }
 
         [HttpGet]
-        public ActionResult New()
+        public ActionResult NewProject()
         {
             Project project = new Project();
 
-            return View("_ProjectForm", project);
+            return PartialView("_ProjectForm", project);
         }
 
         [HttpGet] // this action result returns the partial containing the modal
-        public ActionResult Edit(int id)
+        public ActionResult EditProject(int id)
         {
             var project = _context.Projects.SingleOrDefault(c => c.Id == id);
 
@@ -68,9 +68,38 @@ namespace Storyboard_App.Controllers
             return PartialView("_ProjectForm", project);
         }
 
-        [HttpPost] // this action takes the viewModel from the modal
-        public ActionResult Edit(Project project)
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult SaveProject(Project project)
+        //{
+
+        //    if (!ModelState.IsValid)
+        //    {                
+        //        return PartialView("_ProjectForm", project);
+        //    }
+
+        //    if (project.Id == 0)
+        //    {
+        //        _context.Projects.Add(project);
+        //    }
+
+        //    else
+        //    {
+        //        var projectInDb = _context.Projects.Single(c => c.Id == project.Id);
+
+        //        projectInDb.Name = project.Name;
+        //        projectInDb.Description = project.Description;
+
+        //    }
+        //    _context.SaveChanges();
+
+        //    return RedirectToAction("DisplayProject","Projects",new { project = project.Name });
+        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SaveProject(Project project)
         {
+
             if (!ModelState.IsValid)
             {
                 return PartialView("_ProjectForm", project);
@@ -91,37 +120,9 @@ namespace Storyboard_App.Controllers
             }
             _context.SaveChanges();
 
-            return RedirectToAction("DisplayProject", "Projects", new { project = project.Name });
+            //return RedirectToAction("DisplayProject", "Projects", new { project = project.Name });
+            return PartialView("_FormSuccess");
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult SaveProject(Project project)
-        {
-            
-            if (!ModelState.IsValid)
-            {                
-                return View("ProjectForm", project);
-            }
-
-            if (project.Id == 0)
-            {
-                _context.Projects.Add(project);
-            }
-
-            else
-            {
-                var projectInDb = _context.Projects.Single(c => c.Id == project.Id);
-
-                projectInDb.Name = project.Name;
-                projectInDb.Description = project.Description;
-
-            }
-            _context.SaveChanges();
-
-            return RedirectToAction("DisplayProject","Projects",new { project = project.Name });
-        }
-
 
         //Page actions
         [Route("projects/display/{project}/{page}")]

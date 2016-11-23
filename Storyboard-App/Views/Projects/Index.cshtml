@@ -6,15 +6,23 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("New Project", "NewProject", "Projects", null, new { @class = "btn btn-primary" })
-</p>
+<div>
+    <button class="btn btn-primary new-project">Edit</button>
+</div>
 
 <ul>
     @foreach (var project in Model)
     {
         <li>
-            @Html.ActionLink(project.Name, "EditProject", "Projects", new { id = project.Id }, null)
+            @Html.ActionLink(project.Name, "DisplayProject", "Projects", new { project = project.Name }, null)
         </li>
     }
 </ul>
+
+<div class="modal fade in" id="edit-project">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="new-project-container"></div>
+        </div>
+    </div>
+</div>

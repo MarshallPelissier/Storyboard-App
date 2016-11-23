@@ -1,11 +1,7 @@
 ﻿@model Storyboard_App.Models.Project
 
-<div class="modal-header">
-    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Edit Project</h3>
-</div>
-<div class="modal-body">
-    @using (Html.BeginForm("SaveProject", "Projects"))
+
+    @using (Html.BeginForm("SaveProject", "Projects",FormMethod.Post, new { id = "project-save" }))
     {
         @Html.ValidationSummary(true, "Please fix the following errors.")
         <div class="form-group">

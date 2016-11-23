@@ -13,13 +13,21 @@
 <!-- modal form-->
 <div>
     <button class="btn btn-primary edit-project" data-id="@Model.Id">Edit</button>
+
 </div>
 <!--this is the modal definition-->
 <div class="modal fade in" id="edit-project">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div id="edit-project-container"></div>
-        </div>
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3 id="myModalLabel">Edit Project</h3>
+            </div>
+            <div class="modal-body">
+                <div id="edit-project-container">
+                </div>
+            </div>
+        </div> 
     </div>
 </div>
 
@@ -33,11 +41,12 @@
         foreach (var page in Model.Pages)
         {
             <li>
-                @Html.ActionLink( page.Num.ToString() , "EditPage", "Projects", new { id = page.Id, project = @Model }, null)
+                @Html.ActionLink(page.Num.ToString(), "EditPage", "Projects", new { id = page.Id, project = @Model }, null)
             </li>
         }
     }
 </ul>
+<br />@Model.Description
 @Scripts.Render("~/bundles/jquery")
 @Scripts.Render("~/bundles/bootstrap")
 @Scripts.Render("~/bundles/site-js")

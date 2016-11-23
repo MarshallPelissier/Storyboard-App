@@ -313,6 +313,8 @@
     <Content Include="Views\Projects\DisplayProject.cshtml" />
     <Content Include="Views\Projects\DisplayPage.cshtml" />
     <Content Include="Views\Projects\_ProjectForm.cshtml" />
+    <Content Include="Views\Shared\_NavBar.cshtml" />
+    <Content Include="Views\Projects\_FormSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
