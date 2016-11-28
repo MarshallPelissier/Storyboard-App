@@ -7,7 +7,7 @@
 <h2>Index</h2>
 
 <div>
-    <button class="btn btn-primary new-project">Edit</button>
+    <button class="btn btn-primary new-project" data-id="">New Project</button>
 </div>
 
 <ul>
@@ -18,11 +18,4 @@
         </li>
     }
 </ul>
-
-<div class="modal fade in" id="edit-project">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div id="new-project-container"></div>
-        </div>
-    </div>
-</div>
+@Html.Partial("_DialogPartial")

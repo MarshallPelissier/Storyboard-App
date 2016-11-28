@@ -1,8 +1,43 @@
-﻿
+﻿@model Storyboard_App.Models.Page
 @{
     ViewBag.Title = "DisplayPage";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>DisplayPage</h2>
-
+<div>
+    <button class="btn btn-primary edit-page" data-project="@Model.Project.Name" data-num="@Model.Num">Edit</button>
+</div>
+@Html.Partial("_DialogPartial")
+<table class="table table-bordered table-hover">
+    <tbody>
+        <tr>
+            <td>Number</td>
+            <td>@Model.Num</td>
+        </tr>
+        <tr>
+            <td>Rough Sketch Path</td>
+            <td>@Model.RoughSketch</td>
+        </tr>
+        <tr>
+            <td>Notes Path</td>
+            <td>@Model.NotesSketch</td>
+        </tr>
+        <tr>
+            <td>Final Path</td>
+            <td>@Model.FinalSketch</td>
+        </tr>
+        <tr>
+            <td>Description</td>
+            <td>@Model.Description</td>
+        </tr>
+        <tr>
+            <td>Script</td>
+            <td>@Model.Script</td>
+        </tr>
+        <tr>
+            <td>Project Name</td>
+            <td>@Model.Project.Name</td>
+        </tr>
+    </tbody>
+</table>

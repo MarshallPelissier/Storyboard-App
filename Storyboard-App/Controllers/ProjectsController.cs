@@ -36,17 +36,13 @@ namespace Storyboard_App.Controllers
         {
             if (!string.IsNullOrWhiteSpace(project))
             {
-                var projectInDb = _context.Projects.Single(c => c.Name == project);
+                var projectInDb = _context.Projects.Include(c=>c.Pages).Single(c => c.Name == project);
 
                 if (projectInDb != null)
                 {                    
                     return View(projectInDb);
                 }
             }
-            //if (project==@";newProject")
-            //{
-            //    return RedirectToAction("NewProject");
-            //}
             return RedirectToAction("Index");
         }
 
@@ -71,33 +67,6 @@ namespace Storyboard_App.Controllers
             return PartialView("_ProjectForm", project);
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult SaveProject(Project project)
-        //{
-
-        //    if (!ModelState.IsValid)
-        //    {                
-        //        return PartialView("_ProjectForm", project);
-        //    }
-
-        //    if (project.Id == 0)
-        //    {
-        //        _context.Projects.Add(project);
-        //    }
-
-        //    else
-        //    {
-        //        var projectInDb = _context.Projects.Single(c => c.Id == project.Id);
-
-        //        projectInDb.Name = project.Name;
-        //        projectInDb.Description = project.Description;
-
-        //    }
-        //    _context.SaveChanges();
-
-        //    return RedirectToAction("DisplayProject","Projects",new { project = project.Name });
-        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult SaveProject(Project project)
@@ -155,6 +124,8 @@ namespace Storyboard_App.Controllers
             return RedirectToAction("Projects");
         }
 
+        [HttpGet]
+        [Route("projects/newpage/{project}")]
         public ActionResult NewPage(string project)
         {
             if (!string.IsNullOrWhiteSpace(project))
@@ -165,21 +136,28 @@ namespace Storyboard_App.Controllers
 
                 if (projectInDb != null)
                 {                    
-                    return View("PageForm", page);
+                    return PartialView("_PageForm", page);
 
                 }
             }
             return HttpNotFound();
         }
 
-        public ActionResult EditPage(int id, Project project)
+        [HttpGet]
+        [Route("projects/editpage/{project}/{num}")]
+        public ActionResult EditPage( string project, int num)
         {
+            if (string.IsNullOrWhiteSpace(project))
+            {
+                return HttpNotFound();
+            }
+            var projectInDb = _context.Projects.Include(c=>c.Pages).Single(c => c.Name == project);
             if (project == null)
             {
                 return HttpNotFound();
             }
 
-            var page = project.Pages.Single(c => c.Id == id);
+            var page = projectInDb.Pages.Single(c => c.Num == num);
 
             if (page == null)
             {
@@ -188,10 +166,10 @@ namespace Storyboard_App.Controllers
 
             var viewModel = new PageViewModel
             {
-                Project = project,
+                Project = projectInDb,
                 Page = page
             };
-            return View("PageForm", viewModel);
+            return PartialView("_PageForm", page);
         }
 
         [HttpPost]
@@ -200,18 +178,13 @@ namespace Storyboard_App.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return View("PageForm", page);
+                return PartialView("_PageForm", page);
             }
 
             if (page.Id == 0)
             {
                 var projectInDb = _context.Projects.Include(c => c.Pages).Single(c => c.Id == page.ProjectId);
                 _context.Pages.Add(page);
-                if (projectInDb.Pages == null)
-                {
-                    projectInDb.Pages = new List<Page>();
-                }
-                //projectInDb.Pages.Add(page);
             }
             else
             {
@@ -227,12 +200,22 @@ namespace Storyboard_App.Controllers
             }
             _context.SaveChanges();
 
-            return RedirectToAction("DisplayPage", "Projects", new { project = page.Project.Name, page = page.Num });
+            return PartialView("_FormSuccess");
         }
+
+        public ActionResult PageFormSubmit(string command)
+        {
+            return PartialView("_ImageUpload");
+        }
+
+        //public ActionResult SavePicture(string filename)
+        //{
+        //    return PartialView("_ImageUpload");
+        //}
 
         public ActionResult test()
         {
-           return View();
+           return PartialView("_ImageUpload");
         }
     }
 }

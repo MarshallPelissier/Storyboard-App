@@ -307,7 +307,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Projects\ProjectForm.cshtml" />
-    <Content Include="Views\Projects\PageForm.cshtml" />
     <Content Include="Views\Projects\Index.cshtml" />
     <Content Include="Views\Projects\test.cshtml" />
     <Content Include="Views\Projects\DisplayProject.cshtml" />
@@ -316,9 +315,12 @@
     <Content Include="Views\Shared\_NavBar.cshtml" />
     <Content Include="Views\Shared\_FormSuccess.cshtml" />
     <Content Include="Views\Shared\_DialogPartial.cshtml" />
+    <Content Include="Views\Shared\_PageForm.cshtml" />
+    <Content Include="Views\Shared\_ImageUpload.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\Images\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

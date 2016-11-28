@@ -12,6 +12,10 @@
 </p>
 
 <div>
+    <button class="btn btn-primary new-page" data-name="@Model.Name">New Page</button>
+</div>
+
+<div>
 <button class="btn btn-primary edit-project" data-id="@Model.Id">Edit</button>
 </div>
 @Html.Partial("_DialogPartial")
@@ -26,7 +30,7 @@
         foreach (var page in Model.Pages)
         {
             <li>
-                @Html.ActionLink(page.Num.ToString(), "EditPage", "Projects", new { id = page.Id, project = @Model }, null)
+                @Html.ActionLink(page.Num.ToString(), "DisplayPage", "Projects", new {  project = @Model.Name, page = page.Num }, null)
             </li>
         }
     }

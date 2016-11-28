@@ -1,0 +1,34 @@
+﻿
+@{  WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+
+    if (IsPost)
+    {
+        photo = WebImage.GetImageFromRequest();
+        if (photo != null)
+        {
+            
+            newFileName = Guid.NewGuid().ToString() + "_" +
+        Path.GetFileName(photo.FileName);
+            imagePath = @"Content\Images\" + newFileName;
+
+            photo.Save(@"~\" + imagePath);
+        }
+    }
+}
+<div class="picture-form">
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "save-picture", enctype = "multipart/form-data" }))
+{
+    <label for="Image">Image</label>
+    <input type="file" name="Image" />
+    <button type="submit" class="btn btn-primary">Save</button>
+}
+@if (imagePath != "")
+{
+    <div class="result">
+        <img id="partial-image" src="..\@imagePath" alt="image" value="@imagePath" />
+
+    </div>
+}
+</div>
