@@ -77,12 +77,22 @@
         });
     });
     //Picture Save Function
-    $("#picture-form").on("submit", "#save-picture", function (e) {
+    $(document).on("submit", "#save-picture", function (e) {
+        e.preventDefault();
         debugger;
         var partialValue = $('#partial-image').val();  // get the value
         //var originalValue = $('#picture-form').val();
         //var hiddenElement = $('[id^=picture] [value="' + originalValue + '"]')
-        var $hiddenElement = $(this).parent();
+        var form = $(this);
+        $.ajax({
+            url: form.attr("action"),
+            method: form.attr("method"),  // post
+            data: form.serialize(),
+            success: function (partialResult) {
+                $("#edit-dialog-container").html(partialResult);
+            }
+        });
+        var $hiddenElement = $(this).parent().parent();
         $($hiddenElement).val(partialValue);         // "save" to main view     
     });
 });

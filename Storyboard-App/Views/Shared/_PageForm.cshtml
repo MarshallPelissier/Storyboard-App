@@ -1,28 +1,31 @@
 ﻿@model Storyboard_App.Models.Page
-@{ 
-    string RSketch="";
-    if (Model.RoughSketch != "")
-    {
-        RSketch = Model.RoughSketch;
-    }
+@{  WebImage photo = null;
+    var newFileName = "";
+    var imagePath = "";
+
     if (IsPost)
     {
-        if (RSketch != Model.RoughSketch)
+        photo = WebImage.GetImageFromRequest();
+        if (photo != null)
         {
-            if (File.Exists("~/" + RSketch))
-            {
-                File.Delete("~/" + RSketch);
-            }
+
+            newFileName = Guid.NewGuid().ToString() + "_" +
+        Path.GetFileName(photo.FileName);
+            imagePath = @"Content\Images\" + newFileName;
+
+            photo.Save(@"~\" + imagePath);
         }
     }
 }
-<div id="picture-form-container1">
-    @Html.LabelFor(m => m.RoughSketch)
-    @Html.Partial("_ImageUpload")
-</div>
 @using (Html.BeginForm("SavePage", "Projects", FormMethod.Post, new { id = "save-dialog" }))
 {
+
     @Html.ValidationSummary(true, "Please fix the following errors.")
+    <div class="form-group">
+        @Html.LabelFor(m => m.RoughSketch)
+        @Html.TextBoxFor(m => m.RoughSketch, new { @class = "form-control", @type = "file"})
+        @Html.ValidationMessageFor(m => m.RoughSketch)
+    </div>
     <div class="form-group">
         @Html.LabelFor(m => m.NotesSketch)
         @Html.TextBoxFor(m => m.NotesSketch, new { @class = "form-control" })
@@ -50,7 +53,6 @@
     </div>
     @Html.HiddenFor(m => m.Id)
     @Html.HiddenFor(m => m.ProjectId)
-    @Html.HiddenFor(m => m.RoughSketch, new { id = "picture1" })
     @Html.AntiForgeryToken()
     <button type="submit" class="btn btn-primary">Save</button>
 }

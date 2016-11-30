@@ -207,11 +207,11 @@ namespace Storyboard_App.Controllers
         {
             return PartialView("_ImageUpload");
         }
-
-        //public ActionResult SavePicture(string filename)
-        //{
-        //    return PartialView("_ImageUpload");
-        //}
+        [HttpPost]
+        public ActionResult SavePicture(string filename)
+        {
+            return PartialView("_ImageUpload");
+        }
 
         public ActionResult test()
         {
