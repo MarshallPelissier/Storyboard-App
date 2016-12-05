@@ -317,6 +317,8 @@
     <Content Include="Views\Shared\_DialogPartial.cshtml" />
     <Content Include="Views\Shared\_PageForm.cshtml" />
     <Content Include="Views\Shared\_ImageUpload.cshtml" />
+    <Content Include="Views\Shared\_FormSuccessRedirect.cshtml" />
+    <Content Include="Views\Projects\OrderPages.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

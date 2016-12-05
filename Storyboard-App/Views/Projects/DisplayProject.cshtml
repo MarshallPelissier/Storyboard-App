@@ -3,38 +3,49 @@
     ViewBag.Title = "DisplayProject";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
 <h2>@Model.Name</h2>
-
-<p>
-    @Html.ActionLink("New Page", "NewPage", "Projects", new { project = @Model.Name }, new { @class = "btn btn-primary" })
-    @*@Html.ActionLink("Edit Project", "EditProject", "Projects", new { id = @Model.Id }, new { @class = "btn btn-primary" })*@
-</p>
 
 <div>
     <button class="btn btn-primary new-page" data-name="@Model.Name">New Page</button>
 </div>
-
+<br/>
 <div>
 <button class="btn btn-primary edit-project" data-id="@Model.Id">Edit</button>
 </div>
-@Html.Partial("_DialogPartial")
+<br/>
+@{ 
+    var tempProject = @Model;
+}
+@Html.ActionLink("Order Pages", "OrderPages", "Projects", new { project = Model.Name }, new {@class="btn btn-primary edit-project"})
+<br />
 
-<ul>
-    @if (Model.Pages == null)
-    {
-        <text>No Pages</text>
-    }
-    else
-    {
-        foreach (var page in Model.Pages)
+@Html.Partial("_DialogPartial")
+<table class="table table-bordered table-hover">
+    <thead>
+        <tr>
+            <th>
+                Pages
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.Pages == null || Model.Pages.Count <= 0)
         {
-            <li>
-                @Html.ActionLink(page.Num.ToString(), "DisplayPage", "Projects", new {  project = @Model.Name, page = page.Num }, null)
-            </li>
+            <tr><td>No Pages</td></tr>
         }
-    }
-</ul>
+        else
+        {
+            foreach (var page in Model.Pages.OrderBy(p=>p.Num))
+            {
+                <tr>
+                    <td>
+                        @Html.ActionLink(page.Id.ToString(), "DisplayPage", "Projects", new { project = @Model.Name, page = page.Num }, null)
+                    </td>
+                </tr>
+            }
+        }        
+    </tbody>
+</table>
 <br />@Model.Description
 @section scripts
 {

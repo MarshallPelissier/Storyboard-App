@@ -71,7 +71,8 @@ namespace Storyboard_App.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SaveProject(Project project)
         {
-
+            bool changed = false;
+            string name = "";
             if (!ModelState.IsValid)
             {
                 return PartialView("_ProjectForm", project);
@@ -80,19 +81,28 @@ namespace Storyboard_App.Controllers
             if (project.Id == 0)
             {
                 _context.Projects.Add(project);
+                name = project.Name;
+                changed = true;
             }
 
             else
             {
                 var projectInDb = _context.Projects.Single(c => c.Id == project.Id);
-
+                if (project.Name != projectInDb.Name || project.Description != projectInDb.Description)
+                {
+                    changed = true;
+                    name = project.Name;
+                }
                 projectInDb.Name = project.Name;
                 projectInDb.Description = project.Description;
 
             }
             _context.SaveChanges();
-            
-            return PartialView("_FormSuccess");
+            if (changed)
+            {
+                return PartialView("_FormSuccessRedirect",name);
+            }
+            return PartialView("_FormSuccess",project);
         }
 
         //Page actions
@@ -202,20 +212,86 @@ namespace Storyboard_App.Controllers
 
             return PartialView("_FormSuccess");
         }
+        
+        public ActionResult OrderPages(string project, int? pageNum)
 
-        public ActionResult PageFormSubmit(string command)
         {
-            return PartialView("_ImageUpload");
+            if (!string.IsNullOrWhiteSpace(project))
+            {
+                var projectInDb = _context.Projects.Include(c => c.Pages).Single(c => c.Name == project);
+
+                if (projectInDb != null)
+                {
+                    Page page;
+                    if (pageNum != null)
+                    {
+                        page = projectInDb.Pages.Single(p => p.Num == pageNum);
+                    }
+                    else
+                    {
+                        page = null;
+                    }
+                    projectInDb.Pages.Sort((x, y) => x.Num.CompareTo(y.Num));
+                    var viewModel = new PageViewModel
+                    {
+                        Project = projectInDb,
+                        Page = page
+                    };
+                    return View(viewModel);
+                }
+            }
+            return HttpNotFound();
         }
+
         [HttpPost]
-        public ActionResult SavePicture(string filename)
+        [ValidateAntiForgeryToken]
+        //public ActionResult SaveOrder(Project project, int? id)
+        public ActionResult SaveOrder(Project project)
         {
-            return PartialView("_ImageUpload");
-        }
+            //if (!string.IsNullOrWhiteSpace(project))
+            //{
+            //    var projectInDb = _context.Projects.Include(c => c.Pages).Single(c => c.Name == project);
+            //    if (projectInDb != null)
+            //    {
+            //        var pagesInDb = _context.Pages;
+            //        foreach (var page in pagesInDb)
+            //        {
+            //            projectInDb.Pages.Single(p => p.Id == page.Id).Num = page.Num;
+            //        }
+            //        _context.SaveChanges();
+            //        Page pageInDb = null;
+            //        if (id != null)
+            //        {
+            //            pageInDb = projectInDb.Pages.Single(p => p.Id == id);
 
-        public ActionResult test()
-        {
-           return PartialView("_ImageUpload");
+            //            return RedirectToAction("DisplayProject", new { project = projectInDb.Name, page = pageInDb.Num });
+            //        }
+
+            //        return RedirectToAction("DisplayProject", new { project = projectInDb.Name });
+            //    }
+            //}
+            //return HttpNotFound();
+            var projectInDb = _context.Projects.Include(c => c.Pages).Single(c => c.Id == project.Id);
+            if (projectInDb != null)
+            {
+                var pagesInDb = projectInDb.Pages;
+                foreach (var page in pagesInDb)
+                {
+                    projectInDb.Pages.Single(p => p.Id == page.Id).Num = project.Pages.Single(p=>p.Id ==page.Id).Num;
+                }
+                projectInDb.Pages.Sort((x, y) => x.Num.CompareTo(y.Num));
+                _context.SaveChanges();
+                //Page pageInDb = null;
+                //if (id != null)
+                //{
+                //    pageInDb = projectInDb.Pages.Single(p => p.Id == id);
+
+                //    return RedirectToAction("DisplayProject", new { project = projectInDb.Name, page = pageInDb.Num });
+                //}
+
+                return RedirectToAction("DisplayProject", new { project = projectInDb.Name });
+            }
+            return HttpNotFound();
         }
     }
 }

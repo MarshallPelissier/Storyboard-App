@@ -76,6 +76,7 @@
             }
         });
     });
+
     //Picture Save Function
     $(document).on("submit", "#save-picture", function (e) {
         e.preventDefault();
@@ -95,4 +96,28 @@
         var $hiddenElement = $(this).parent().parent();
         $($hiddenElement).val(partialValue);         // "save" to main view     
     });
+});
+
+//ordering pages
+$(function () {
+    $("#sortable").sortable();
+    $("#sortable").disableSelection();
+});
+
+$('#save-order').click(function () {
+    debugger;
+    var idsInOrder = $("#sortable").sortable("toArray");
+    console.log(idsInOrder);
+    $.each(idsInOrder, function (index, value) {
+        $('#' + value).find('[id*= _Num]').val(index + 1);
+        console.log('#' + value);
+        console.log($('#' + value));
+    });
+    //var button = $(this);
+    //var url = "/projects/saveOrder"; // the url to the controller
+    //var viewModel = $(this).attr('data-view-model'); // the id that's given to each button
+    //$.post(url + '/' + viewModel, function (data) {
+
+    //});
+
 });

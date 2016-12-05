@@ -15,6 +15,10 @@ namespace Storyboard_App
                         "~/Scripts/jquery.validate*"));
 
             // Add the jquery-ui script bundle
+            bundles.Add(new ScriptBundle("~/bundles/unobtrusive-ajax").Include(
+                        "~/Scripts/jquery.unobtrusive-ajax.js"));
+
+            // Add the jquery-ui script bundle
             bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
                         "~/Scripts/jquery-ui-{version}.js"));
 

@@ -1,0 +1,67 @@
+﻿@model Storyboard_App.ViewModels.PageViewModel
+@{
+    ViewBag.Title = "OrderPages";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var pageList = (from t in Model.Project.Pages
+                    orderby t.Num ascending
+                    select t);
+    
+    var j = 1;
+    var pageCount = pageList.Count();
+    int? Id = null;
+    if (Model.Page != null)
+    {
+        Id = Model.Page.Id;
+    }
+}
+
+<h2>EditPageOrder</h2>
+
+
+@*@using (Html.BeginForm("SaveOrder", "Projects", new { project = Model.Project, num = Id }))*@
+
+@using (Html.BeginForm("SaveOrder", "Projects"))
+{
+<div id="sortable">
+    @for (int i = 0; i < Model.Project.Pages.Count; i++)
+    {
+        string pageId = "page" + Model.Project.Pages[i].Num;
+        <div class="page-number" id="@pageId">
+            @Model.Project.Pages[i].Num   @Model.Project.Pages[i].Id
+            @Html.HiddenFor(m => m.Project.Pages[i].Num)
+            @Html.HiddenFor(m => m.Project.Pages[i].Id)
+            @Html.HiddenFor(m => m.Project.Pages[i].NotesSketch)
+            @Html.HiddenFor(m => m.Project.Pages[i].RoughSketch)
+            @Html.HiddenFor(m => m.Project.Pages[i].FinalSketch)
+            @Html.HiddenFor(m => m.Project.Pages[i].Description)
+            @Html.HiddenFor(m => m.Project.Pages[i].Script)
+            @Html.HiddenFor(m => m.Project.Pages[i].ProjectId)
+        </div>
+        j++;
+    }
+
+</div>
+<br />
+<div>
+    <p>Page Count = @pageCount</p>
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.Project.Id)
+    @Html.HiddenFor(m => m.Project.Name)
+    @Html.HiddenFor(m => m.Project.Description)
+    @*@Html.HiddenFor(m => m.Project.Pages)*@
+    <button type="submit" class="btn btn-primary">Save</button>
+</div>
+}
+<div>
+    <button class="btn btn-primary" id="save-order" data-view-model="@Model">Save Order</button>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />
+@section scripts
+{
+    @Scripts.Render("~/bundles/jquery-ui")
+    @Scripts.Render("~/bundles/site-js")
+}
